@@ -1,4 +1,5 @@
 const Memory = require("./Memory")
+const { resolve } = require("path")
 
 class CPU {
     constructor() {
@@ -20,7 +21,6 @@ class CPU {
         this.IR = this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     //명령어 실행, LOAD는 기억장치에 저장된 데이터를 AC로 이동
@@ -31,7 +31,6 @@ class CPU {
         this.AC = this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
     
     ADD1(memory) {
@@ -41,7 +40,6 @@ class CPU {
         this.AC = this.AC + this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     SUB1(memory) {
@@ -51,7 +49,6 @@ class CPU {
         this.AC = this.AC - this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     MUL1(memory) {
@@ -61,7 +58,6 @@ class CPU {
         this.AC = this.AC * this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     DIV1(memory) {
@@ -71,7 +67,6 @@ class CPU {
         this.AC = Math.floor(this.AC / this.MBR)
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
     
     STOR(memory) {
@@ -81,14 +76,12 @@ class CPU {
         memory.mem[this.MAR] = this.MBR
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     MOV(memory) {
         console.log('MOV')
         this.MAR = this.IR.split(' ').splice(1, 2)
 
-        console.log(this.MAR)
         if(this.MAR[0][0] === 'R' && this.MAR[1][0] === 'R') {
             this.MBR = this.register[this.MAR[1]]
             this.register[this.MAR[0]] = this.MBR
@@ -108,7 +101,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     ADD2(memory) {
@@ -134,7 +126,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     SUB2(memory) {
@@ -160,7 +151,6 @@ class CPU {
         
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     MUL2(memory) {
@@ -186,7 +176,6 @@ class CPU {
         
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     DIV2(memory) {
@@ -212,7 +201,6 @@ class CPU {
         
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     ADD3(memory) {
@@ -254,7 +242,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     SUB3(memory) {
@@ -296,7 +283,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     MUL3(memory) {
@@ -338,7 +324,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     DIV3(memory) {
@@ -380,7 +365,6 @@ class CPU {
 
         this.MAR = 0 //MAR 초기화
         this.MBR = 0 //MBR 초기화
-        this.show(memory)
     }
 
     CALL(addr) {
@@ -392,8 +376,22 @@ class CPU {
     }
 
     show(memory) {
-        console.log(`PC : ${this.PC}, AC : ${this.AC}, MAR : ${this.MAR}, MBR : ${this.MBR}, IR : ${this.IR}, SP : ${this.SP}, register : `, this.register)
-        console.log(memory)
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log(`PC : ${this.PC}, AC : ${this.AC}, MAR : ${this.MAR}, MBR : ${this.MBR}, IR : ${this.IR}, SP : ${this.SP}, register : `, this.register)
+                console.log(memory)
+                resolve([this, memory])
+            }, 1000)
+        })
+    }
+
+    log_clear() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.clear()
+                resolve(this)
+            }, 3000)
+        })
     }
 }
 
